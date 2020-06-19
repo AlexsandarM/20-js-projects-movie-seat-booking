@@ -1,4 +1,4 @@
-const container = document.querySelector('.container-seat');
+const container = document.querySelector('.container');
 const seats = document.querySelectorAll('.row .seat:not(.occupied)');
 
 const count = document.getElementById('count');
@@ -6,10 +6,10 @@ const total = document.getElementById('total');
 
 const movieSelect = document.getElementById('movie');
 
-let ticketPrice = +movieSelect.value;
-
 // Populate UI with saved data
 populateUI();
+
+let ticketPrice = +movieSelect.value;
 
 // Save selected movie index and price
 function setMovieData(movieIndex, moviePrice) {
@@ -20,10 +20,6 @@ function setMovieData(movieIndex, moviePrice) {
 // Update count and total 
 function updateSelectedCount() {
   const selectedSeats = document.querySelectorAll('.row .seat.selected');
-  const selectedSeatsCount = selectedSeats.length;
-
-  count.innerText = selectedSeatsCount;
-  total.innerText = selectedSeatsCount * ticketPrice;
 
   // copy selected seats into arr
   // map through array
@@ -33,6 +29,10 @@ function updateSelectedCount() {
   // save input to local storage
   localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
 
+  const selectedSeatsCount = selectedSeats.length;
+
+  count.innerText = selectedSeatsCount;
+  total.innerText = selectedSeatsCount * ticketPrice;
 }
 
 // Get date from localstorage and populate UI
@@ -64,16 +64,17 @@ movieSelect.addEventListener('change', e => {
   setMovieData(e.target.selectedIndex, e.target.value);
 
   updateSelectedCount();
-})
+});
 
 // Selecting seats
 container.addEventListener('click', (e) => {
-  if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+  if (e.target.classList.contains('seat') &&
+    !e.target.classList.contains('occupied')) {
     e.target.classList.toggle('selected');
 
     updateSelectedCount();
   }
-})
+});
 
 // Update selected Count
 updateSelectedCount();
